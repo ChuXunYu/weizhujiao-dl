@@ -1,0 +1,5 @@
+# 运行依赖：浏览器自动化 + 直链下载
+# （.env 由包内 config 自己解析，不再需要 python-dotenv）
+selenium>=4.10
+requests>=2.28
+webdriver-manager>=3.9

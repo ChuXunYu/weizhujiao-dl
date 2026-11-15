@@ -1,2 +1,20 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# 统一换行：文本一律 LF，Windows 脚本保留 CRLF
+* text=auto eol=lf
+
+*.py   text
+*.md   text
+*.txt  text
+*.env  text
+*.example text
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# 下载产物/浏览器 profile 即使误入也不要按文本处理
+*.pdf  binary
+*.ppt  binary
+*.pptx binary
+*.doc  binary
+*.docx binary
+*.zip  binary

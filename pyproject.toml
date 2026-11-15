@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weizhujiao-dl"
+description = "微助教（teachermate）课件批量下载器：按课件原名落盘，支持断点续传与降级重试"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "selenium>=4.10",
+    "requests>=2.28",
+    "webdriver-manager>=3.9",
+]
+dynamic = ["version"]
+keywords = ["teachermate", "weizhujiao", "courseware", "selenium", "downloader"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: Chinese (Simplified)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Education",
+    "Topic :: Internet :: WWW/HTTP :: Browsers",
+]
+
+[project.urls]
+Homepage = "https://github.com/ChuXunYu/weizhujiao-dl"
+Repository = "https://github.com/ChuXunYu/weizhujiao-dl"
+Issues = "https://github.com/ChuXunYu/weizhujiao-dl/issues"
+
+[project.scripts]
+weizhujiao-dl = "weizhujiao_dl.cli:main"
+
+[tool.setuptools]
+packages = ["weizhujiao_dl"]
+
+[tool.setuptools.dynamic]
+version = { attr = "weizhujiao_dl.__version__" }
+
+[tool.ruff]
+line-length = 110
+target-version = "py39"
+
+[tool.ruff.lint]
+# 只留"能抓 bug"的规则：
+#   UP（pyupgrade）/ARG（未用参数）/PTH（os.path→pathlib）刻意不启用 ——
+#   本项目的协议替身方法本来就有用不到的参数，URL 处理也不该硬套 pathlib。
+select = ["F", "E", "W", "I", "B", "C4", "SIM", "RET"]
+ignore = [
+    "E501",  # 行宽交给 line-length
+    "B008",
+]

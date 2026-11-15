@@ -1,0 +1,30 @@
+# 凭据：绝不要提交 -----------------------------------------------------------
+.env
+.env.*
+!.env.example
+cookie*.txt
+
+# 下载产物与断点状态
+downloads/
+*.part
+.wzd-state.json
+
+# --- Python ----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# --- 编辑器 / 系统 ---------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# --- 浏览器 profile（--user-data-dir 生成的登录态） ------------------------
+.chrome-profile/
