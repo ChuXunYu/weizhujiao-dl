@@ -139,7 +139,14 @@ tests/              83 个离线用例（含 403→带参、404→改名的完�
 
 ```bash
 python -m unittest discover -s tests -t .    # 83 个用例，~0.3 秒，全程离线
+pip install ruff && ruff check .             # 静态检查
 ```
+
+用例不需要 selenium / requests：`browser.py` 的 selenium 与 `net.py` 的 requests 都是**函数内延迟 import**，
+干净环境（只有标准库）就能跑完全部用例。
+
+> 本项目**不接 CI/CD**：没有 GitHub Actions，也不生成发布产物。测试与检查都在本地手动跑，
+> 需要什么就 `pip install -r requirements.txt`。这样改一行代码不会被流水线拦着，也不会为了跑测试去联网装浏览器。
 
 覆盖：文件名解析（含已读/未读、编号粘连、中文冒号）、文件名净化（非法字符/超长/Windows 保留名）、
 直链挑选与重写、配置三层合并与校验、下载器（原子写、403/HTML/空文件/连接中断）、
