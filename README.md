@@ -5,7 +5,7 @@
 
 ![platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-0078d4)
 ![python](https://img.shields.io/badge/python-3.9%2B-3776ab)
-![tests](https://img.shields.io/badge/tests-83%20offline-4c1)
+![tests](https://img.shields.io/badge/tests-87%20offline-4c1)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
 微助教的课件有「开启」和「允许学生下载」两个开关。老师只开「开启」、关掉「允许学生下载」时，
@@ -28,7 +28,7 @@
 - **`--dry-run`**：先只识别文件名，确认解析对不对再动手
 - **`--json`**：汇总可以导出成 JSON，方便接脚本
 - **登录态复用**：`--user-data-dir` 持久化 profile，扫码登录一次就够
-- **可测**：83 个离线用例，不联网、不开浏览器、不需要 selenium
+- **可测**：87 个离线用例，不联网、不开浏览器、不需要 selenium
 
 ## 安装
 
@@ -81,7 +81,7 @@ python -m weizhujiao_dl --headless --user-data-dir .chrome-profile
 | `--limit N` | 只处理前 N 个课件 |
 | `--dry-run` | 只识别文件名，不下载 |
 | `--force` | 忽略状态文件，已下载的也重下 |
-| `--retries N` | 换链接重试上限（默认 2） |
+| `--retries N` | 换链接重试上限（默认 2，即最多试 `1+N` 条直链；直链本身最多 3 条） |
 | `--delay-min/-max` | 课件之间的随机间隔（默认 1.0–2.0 秒） |
 | `--headless` | 无头模式（先有头登录一次并存 profile） |
 | `--user-data-dir DIR` | 持久化 Chrome profile |
@@ -141,7 +141,7 @@ weizhujiao_dl/
 ├── report.py       汇总（人话 / JSON）
 ├── models.py       Courseware / Outcome / Summary
 └── net.py          requests 会话（Cookie 搬自浏览器）
-tests/              83 个离线用例（含 403→带参、404→改名的完整链路）
+tests/              87 个离线用例（含 403→带参、404→改名的完整链路）
 ```
 
 设计上刻意做的三件事：
@@ -153,7 +153,7 @@ tests/              83 个离线用例（含 403→带参、404→改名的完�
 ## 测试
 
 ```bash
-python -m unittest discover -s tests -t .    # 83 个用例，~0.3 秒，全程离线
+python -m unittest discover -s tests -t .    # 87 个用例，~0.1 秒，全程离线
 pip install ruff && ruff check .             # 静态检查
 ```
 

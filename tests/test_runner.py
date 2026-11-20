@@ -137,6 +137,40 @@ class TestFallbackChain(RunnerTestBase):
         self.assertIs(outcome.reason, Reason.HTTP_ERROR)
         self.assertEqual(len(session.calls), 1)
 
+    def test_retries_zero_only_tries_first_link(self):
+        """--retries 0：不换链接，403 直接判失败。"""
+        session = FakeSession({PLAIN: FakeResponse(status=403),
+                               SIGNED: FakeResponse(chunks=[b"ok"])})
+        summary = self.runner(FakePage(self.items, link=SIGNED), session, retries=0).run()
+
+        outcome = summary.outcomes[0]
+        self.assertIs(outcome.status, Status.FAILED)
+        self.assertEqual(outcome.attempts, 1)
+        self.assertEqual(session.urls, [PLAIN])
+
+    def test_retries_one_caps_chain(self):
+        """--retries 1：最多试 1 + 1 = 2 条，第三条（按课件名重写）不该发出去。"""
+        session = FakeSession({WRONG_PLAIN: FakeResponse(status=404),
+                               WRONG_SIGNED: FakeResponse(status=404),
+                               REBUILT: FakeResponse(chunks=[b"fixed"])})
+        summary = self.runner(FakePage(self.items, link=WRONG_SIGNED), session, retries=1).run()
+
+        outcome = summary.outcomes[0]
+        self.assertIs(outcome.status, Status.FAILED)
+        self.assertEqual(outcome.attempts, 2)
+        self.assertNotIn(REBUILT, session.urls)
+
+    def test_retries_beyond_chain_is_capped(self):
+        """--retries 调大也超不过直链本身的三条。"""
+        session = FakeSession({WRONG_PLAIN: FakeResponse(status=404),
+                               WRONG_SIGNED: FakeResponse(status=404),
+                               REBUILT: FakeResponse(chunks=[b"fixed"])})
+        summary = self.runner(FakePage(self.items, link=WRONG_SIGNED), session, retries=9).run()
+
+        outcome = summary.outcomes[0]
+        self.assertIs(outcome.status, Status.OK)
+        self.assertEqual(outcome.attempts, 3)
+
 
 class TestFailureReasons(RunnerTestBase):
     def test_no_link(self):

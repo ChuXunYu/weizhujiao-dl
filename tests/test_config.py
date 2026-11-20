@@ -80,6 +80,10 @@ class TestSettingsBuild(unittest.TestCase):
         with self.assertRaises(ConfigError):
             Settings.build(args(course_url="https://x", xpath="//a", delay_min=-1), environ={})
 
+    def test_retries_clamped_non_negative(self):
+        s = Settings.build(args(course_url="https://x", xpath="//a", retries=-3), environ={})
+        self.assertEqual(s.retries, 0)
+
     def test_default_state_and_out_dir(self):
         s = Settings.build(args(course_url="https://x", xpath="//a", out="out"), environ={})
         self.assertEqual(s.out_dir.name, "out")

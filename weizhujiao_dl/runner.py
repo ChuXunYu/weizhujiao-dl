@@ -114,10 +114,16 @@ class Runner:
             headers["User-Agent"] = self.user_agent
 
         plan = link_plan(link, name or None)
+        # --retries 是"再换几条链接"的上限：默认 2 → 最多试 1 + 2 = 3 条，正好覆盖三级降级；
+        # 调小可以更快放弃，调大也超不过 plan 本身的条数。
+        retries = max(0, int(self.settings.retries or 0))
+        limit = min(len(plan), 1 + retries)
+        if limit < len(plan):
+            LOG.debug("--retries=%d：本课件只试前 %d 条直链（共 %d 条）", retries, limit, len(plan))
         last_error = ""
         attempts = 0
 
-        for label, url in plan:
+        for label, url in plan[:limit]:
             attempts += 1
             LOG.debug("  尝试[%d] %s: %s", attempts, label, url)
             try:
@@ -126,7 +132,7 @@ class Runner:
             except HttpStatusError as exc:
                 last_error = "%s → HTTP %d" % (label, exc.status)
                 LOG.debug("  %s", last_error)
-                if exc.status in (403, 404) and attempts < len(plan):
+                if exc.status in (403, 404) and attempts < limit:
                     continue          # 换下一条 URL 试
                 reason = Reason.DENIED if exc.status == 403 else (
                     Reason.NOT_FOUND if exc.status == 404 else Reason.HTTP_ERROR)

@@ -50,7 +50,8 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--limit", type=int, help="只处理前 N 个课件")
     run.add_argument("--dry-run", action="store_true", help="只识别课件名，不下载")
     run.add_argument("--force", action="store_true", help="忽略状态文件，已下载的也重下")
-    run.add_argument("--retries", type=int, default=2, help="同一课件换链接重试次数上限（默认 2）")
+    run.add_argument("--retries", type=int, default=2,
+                     help="换链接重试上限（默认 2，即最多试 1+N 条直链；直链本身最多 3 条）")
     run.add_argument("--delay-min", type=float, default=1.0, help="课件间隔下限秒（默认 1.0）")
     run.add_argument("--delay-max", type=float, default=2.0, help="课件间隔上限秒（默认 2.0）")
 
