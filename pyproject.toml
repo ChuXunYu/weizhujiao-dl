@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "weizhujiao-dl"
-description = "微助教（teachermate）课件批量下载器：按课件原名落盘，支持断点续传与降级重试"
+description = "微助教（teachermate）课件下载器：没有下载权限、只能在线预览的课件也能按原名批量保存到本地，支持断点续传与直链三级降级"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [

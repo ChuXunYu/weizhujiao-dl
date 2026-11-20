@@ -24,7 +24,7 @@ EXIT_USAGE = 2
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="weizhujiao-dl",
-        description="微助教（teachermate）课件批量下载器",
+        description="微助教（teachermate）课件下载器：没有下载权限、只能在线预览的课件也能批量保存",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
             "示例:\n"

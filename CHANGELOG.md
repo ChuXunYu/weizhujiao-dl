@@ -2,14 +2,24 @@
 
 版本号遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## 未发布
+
+### 文档
+
+- **修正项目定位**：核心用途是「老师没开『允许学生下载』、网页端只能在线预览的课件也能下载」。
+  此前 README、仓库简介、`pyproject.toml` / 包 / CLI 自述都只写成「课件批量下载器」，没讲清它解决的是「没有下载权限」的场景。
+- README 补「为什么没开下载权限也能下」（预览走 ow365，预览页的文件直链不受「允许学生下载」开关限制）、
+  对应 FAQ 和更具体的免责声明；代码结构补上漏掉的 `errors.py`。
+- 修正文件名编码问题的错误描述（原写成「`C++` → `C++`」，实际是 `C++` 的加号被平台吃掉）。
+
 ## 3.0.0 — 2026-11-15
 
 从单文件脚本重写为包，命令行入口与内部结构都变了（破坏性升级）。
 
 ### 结构
 
-- `downloader.py`（284 行单文件）→ `weizhujiao_dl/` 包，12 个模块按职责拆分：
-  `cli / config / naming / links / selectors / browser / downloader / state / runner / report / models / net`
+- `downloader.py`（284 行单文件）→ `weizhujiao_dl/` 包，13 个模块按职责拆分：
+  `cli / config / naming / links / selectors / browser / downloader / errors / state / runner / report / models / net`
 - 入口改为 `python -m weizhujiao_dl`，另可用 `pip install -e .` 得到 `weizhujiao-dl` 命令
 - 新增 `pyproject.toml`（打包 + console script + ruff 配置）
 - 新增 `CHANGELOG.md`、`.editorconfig`；`requirements.txt` 精简（去掉 `python-dotenv`）

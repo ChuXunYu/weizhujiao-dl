@@ -232,7 +232,7 @@ class BrowserPage:
         """返回最可能的直链；一个都没有就抛 DirectLinkMissing。"""
         best = pick_direct_link(self.direct_link_candidates(), filename)
         if not best:
-            raise DirectLinkMissing("预览页没有给出可下载的直链（文档可能只支持在线预览）")
+            raise DirectLinkMissing("预览页没有给出文件直链（非文档类资源，或平台改版后不再暴露直链）")
         return best
 
     # ---------------- 回到列表
